@@ -1,17 +1,17 @@
-require "resque/unique_at_enqueue/version"
+require 'resque/unique_at_enqueue/version'
 
 # Ruby Std Lib
-require "digest/md5"
+require 'digest/md5'
 
 # External Gems
 require 'resque'
 
 # This Gem
-require "resque/plugins/unique_at_enqueue"
-require "resque/unique_at_enqueue/resque_ext/job"
-require "resque/unique_at_enqueue/resque_ext/resque"
-require "resque/unique_at_enqueue/queue"
-require "resque/unique_at_enqueue/configuration"
+require 'resque/plugins/unique_at_enqueue'
+require 'resque/unique_at_enqueue/resque_ext/job'
+require 'resque/unique_at_enqueue/resque_ext/resque'
+require 'resque/unique_at_enqueue/queue'
+require 'resque/unique_at_enqueue/configuration'
 
 module Resque
   module UniqueAtEnqueue

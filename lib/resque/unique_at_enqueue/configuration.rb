@@ -26,7 +26,7 @@ module Resque
       def to_hash
         {
           logger: logger,
-          log_level: log_level,
+          log_level: log_level
         }
       end
     end

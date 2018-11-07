@@ -3,11 +3,13 @@ module Resque
     module Queue
       def queued?(queue, item)
         return false unless is_unique?(item)
-        redis.get(unique_key(queue, item)) == "1"
+
+        redis.get(unique_key(queue, item)) == '1'
       end
 
       def mark_queued(queue, item)
         return unless is_unique?(item)
+
         key = unique_key(queue, item)
         redis.set(key, 1)
         ttl = item_ttl(item)
@@ -17,6 +19,7 @@ module Resque
       def mark_unqueued(queue, job)
         item = job.is_a?(Resque::Job) ? job.payload : job
         return unless is_unique?(item)
+
         ttl = lock_after_execution_period(item)
         if ttl == 0
           redis.del(unique_key(queue, item))
@@ -53,8 +56,9 @@ module Resque
 
         redis.lrange(redis_queue, 0, -1).each do |string|
           json = Resque.decode(string)
-          next unless json["class"] == klass
-          next if args.any? && json["args"] != args
+          next unless json['class'] == klass
+          next if args.any? && json['args'] != args
+
           Resque::UniqueAtEnqueue::Queue.mark_unqueued(queue, json)
         end
       end
@@ -71,11 +75,11 @@ module Resque
       end
 
       def item_class(item)
-        item[:class] || item["class"]
+        item[:class] || item['class']
       end
 
       def const_for(item)
-          Resque.constantize(item_class(item))
+        Resque.constantize(item_class(item))
         end
 
       module_function :queued?, :mark_queued, :mark_unqueued, :unique_key

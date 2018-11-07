@@ -6,8 +6,7 @@ class FakeUniqueAtEnqueue
   include Resque::Plugins::UniqueAtEnqueue
   @queue = :unique
 
-  def self.perform(_)
-  end
+  def self.perform(_); end
 end
 
 class FailingUniqueAtEnqueue
@@ -15,7 +14,7 @@ class FailingUniqueAtEnqueue
   @queue = :unique
 
   def self.perform(_)
-    raise "Fail"
+    raise 'Fail'
   end
 end
 
@@ -24,8 +23,7 @@ class UniqueAtEnqueueWithTtl
   @queue = :unique_with_ttl
   @ttl = 300
 
-  def self.perform(*_)
-  end
+  def self.perform(*_); end
 end
 
 class UniqueAtEnqueueWithLock
@@ -33,6 +31,5 @@ class UniqueAtEnqueueWithLock
   @queue = :unique_with_lock
   @lock_after_execution_period = 150
 
-  def self.perform(*_)
-  end
+  def self.perform(*_); end
 end

@@ -7,7 +7,8 @@ module Resque
         if Resque.inline? || !Resque::UniqueAtEnqueue::Queue.is_unique?(item)
           return create_without_unique_at_enqueue(queue, klass, *args)
         end
-        return "EXISTED" if Resque::UniqueAtEnqueue::Queue.queued?(queue, item)
+        return 'EXISTED' if Resque::UniqueAtEnqueue::Queue.queued?(queue, item)
+
         create_return_value = false
         # redis transaction block
         Resque.redis.multi do
@@ -30,12 +31,12 @@ module Resque
         destroy_without_unique_at_enqueue(queue, klass, *args)
       end
 
-      alias_method :create_without_unique_at_enqueue, :create
-      alias_method :create, :create_unique_at_enqueue
-      alias_method :reserve_without_unique_at_enqueue, :reserve
-      alias_method :reserve, :reserve_unique_at_enqueue
-      alias_method :destroy_without_unique_at_enqueue, :destroy
-      alias_method :destroy, :destroy_unique_at_enqueue
+      alias create_without_unique_at_enqueue create
+      alias create create_unique_at_enqueue
+      alias reserve_without_unique_at_enqueue reserve
+      alias reserve reserve_unique_at_enqueue
+      alias destroy_without_unique_at_enqueue destroy
+      alias destroy destroy_unique_at_enqueue
 
       if defined?(Resque::Plugins::PriorityEnqueue::Resque)
         # Hack to support resque-priority_enqueue: https://github.com/coupa/resque-priority_enqueue
@@ -44,7 +45,8 @@ module Resque
           if Resque.inline? || !Resque::UniqueAtEnqueue::Queue.is_unique?(item)
             return priority_create_without_unique_at_enqueue(queue, klass, *args)
           end
-          return "EXISTED" if Resque::UniqueAtEnqueue::Queue.queued?(queue, item)
+          return 'EXISTED' if Resque::UniqueAtEnqueue::Queue.queued?(queue, item)
+
           priority_create_return_value = false
           # redis transaction block
           Resque.redis.multi do
@@ -54,8 +56,8 @@ module Resque
           priority_create_return_value
         end
 
-        alias_method :priority_create_without_unique_at_enqueue, :priority_create
-        alias_method :priority_create, :priority_create_unique_at_enqueue
+        alias priority_create_without_unique_at_enqueue priority_create
+        alias priority_create priority_create_unique_at_enqueue
       end
     end
   end

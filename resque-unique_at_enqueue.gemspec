@@ -3,16 +3,16 @@
 require File.expand_path('lib/resque/unique_at_enqueue/version', __dir__)
 
 Gem::Specification.new do |spec|
-  spec.name          = "resque-unique_at_enqueue"
+  spec.name          = 'resque-unique_at_enqueue'
   spec.version       = Resque::UniqueAtEnqueue::VERSION
-  spec.authors       = ['Peter H. Boling', "Tee Parham"]
-  spec.email         = %w(peter.boling@gmail.com)
-  spec.license       = "MIT"
+  spec.authors       = ['Peter H. Boling', 'Tee Parham']
+  spec.email         = %w[peter.boling@gmail.com]
+  spec.license       = 'MIT'
 
   spec.summary       = 'A resque plugin that ensures job uniqueness at tome of enqueue.'
   spec.summary       = 'A resque plugin that ensures job uniqueness at tome of enqueue.'
-  spec.homepage      = "https://github.com/pboling/resque-unique_at_enqueue"
-  spec.required_ruby_version = ">= 2.0.0"
+  spec.homepage      = 'https://github.com/pboling/resque-unique_at_enqueue'
+  spec.required_ruby_version = '>= 2.0.0'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -20,13 +20,13 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_runtime_dependency 'resque', '>= 1.2'
   spec.add_runtime_dependency 'colorize', '~> 0.8'
+  spec.add_runtime_dependency 'resque', '>= 1.2'
 
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'byebug', '~> 10.0'
-  spec.add_development_dependency "fakeredis", "~> 0.7"
-  spec.add_development_dependency "minitest", "~> 5.11"
+  spec.add_development_dependency 'fakeredis', '~> 0.7'
+  spec.add_development_dependency 'minitest', '~> 5.11'
   spec.add_development_dependency 'pry', '~> 0.11'
   spec.add_development_dependency 'pry-byebug', '~> 3.6'
   spec.add_development_dependency 'rake', '~> 12.3'
