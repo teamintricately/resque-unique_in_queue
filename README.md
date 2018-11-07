@@ -1,12 +1,12 @@
-# ResqueSolo
+# Resque::UniqueAtEnqueue
 
-[![Gem Version](http://img.shields.io/gem/v/resque_solo.svg)][gem]
-[![Build Status](http://img.shields.io/travis/neighborland/resque_solo.svg)][build]
+[![Gem Version](http://img.shields.io/gem/v/resque_unique_at_enqueue.svg)][gem]
+[![Build Status](http://img.shields.io/travis/neighborland/resque_unique_at_enqueue.svg)][build]
 
-[gem]: http://rubygems.org/gems/resque_solo
-[build]: https://travis-ci.org/neighborland/resque_solo
+[gem]: http://rubygems.org/gems/resque_unique_at_enqueue
+[build]: https://travis-ci.org/neighborland/resque_unique_at_enqueue
 
-ResqueSolo is a resque plugin to add unique jobs to resque.
+Resque::UniqueAtEnqueue is a resque plugin to add unique jobs to resque.
 
 It is a re-write of [resque-loner](https://github.com/jayniz/resque-loner).
 
@@ -19,7 +19,7 @@ It removes the dependency on `Resque::Helpers`, which is deprecated for resque 2
 Add the gem to your Gemfile:
 
 ```ruby
-gem 'resque_solo'
+gem 'unique_at_enqueue'
 ```
 
 ## Usage

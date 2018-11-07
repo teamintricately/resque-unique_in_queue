@@ -38,8 +38,8 @@ Style/Documentation:
     - 'test/**/*'
     - 'lib/resque_ext/job.rb'
     - 'lib/resque_ext/resque.rb'
-    - 'lib/resque_solo/queue.rb'
-    - 'lib/resque_solo/unique_job.rb'
+    - 'lib/unique_at_enqueue/queue.rb'
+    - 'lib/unique_at_enqueue/unique_job.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -52,7 +52,7 @@ Style/IfUnlessModifier:
 # Cop supports --auto-correct.
 Style/MutableConstant:
   Exclude:
-    - 'lib/resque_solo/version.rb'
+    - 'lib/unique_at_enqueue/version.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -60,7 +60,7 @@ Style/MutableConstant:
 # SupportedStyles: predicate, comparison
 Style/NumericPredicate:
   Exclude:
-    - 'lib/resque_solo/queue.rb'
+    - 'lib/unique_at_enqueue/queue.rb'
 
 # Offense count: 1
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist.
@@ -70,4 +70,4 @@ Style/NumericPredicate:
 Style/PredicateName:
   Exclude:
     - 'spec/**/*'
-    - 'lib/resque_solo/queue.rb'
+    - 'lib/unique_at_enqueue/queue.rb'

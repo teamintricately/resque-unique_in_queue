@@ -1,6 +1,6 @@
-module ResqueSolo
-  class Queue
-    class << self
+module Resque
+  module UniqueAtEnqueue
+    module Queue
       def queued?(queue, item)
         return false unless is_unique?(item)
         redis.get(unique_key(queue, item)) == "1"
@@ -26,11 +26,11 @@ module ResqueSolo
       end
 
       def unique_key(queue, item)
-        "solo:queue:#{queue}:job:#{const_for(item).redis_key(item)}"
+        const_for(item).unique_at_queue_time_redis_key(queue, item)
       end
 
       def is_unique?(item)
-        const_for(item).included_modules.include?(::Resque::Plugins::UniqueJob)
+        const_for(item).included_modules.include?(::Resque::Plugins::UniqueAtEnqueue)
       rescue NameError
         false
       end
@@ -55,12 +55,12 @@ module ResqueSolo
           json = Resque.decode(string)
           next unless json["class"] == klass
           next if args.any? && json["args"] != args
-          ResqueSolo::Queue.mark_unqueued(queue, json)
+          Resque::UniqueAtEnqueue::Queue.mark_unqueued(queue, json)
         end
       end
 
       def cleanup(queue)
-        keys = redis.keys("solo:queue:#{queue}:job:*")
+        keys = redis.keys("unique_at_enqueue:queue:#{queue}:job:*")
         redis.del(*keys) if keys.any?
       end
 
@@ -75,8 +75,12 @@ module ResqueSolo
       end
 
       def const_for(item)
-        Resque::Job.new(nil, nil).constantize item_class(item)
-      end
+          Resque.constantize(item_class(item))
+        end
+
+      module_function :queued?, :mark_queued, :mark_unqueued, :unique_key
+      module_function :is_unique?, :item_ttl, :lock_after_execution_period
+      module_function :destroy, :cleanup, :redis, :item_class, :const_for
     end
   end
 end

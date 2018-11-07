@@ -25,16 +25,16 @@ module Resque
 
     def enqueued_in?(queue, klass, *args)
       item = { class: klass.to_s, args: args }
-      return nil unless ResqueSolo::Queue.is_unique?(item)
-      ResqueSolo::Queue.queued?(queue, item)
+      return nil unless Resque::UniqueAtEnqueue::Queue.is_unique?(item)
+      Resque::UniqueAtEnqueue::Queue.queued?(queue, item)
     end
 
-    def remove_queue_with_cleanup(queue)
-      remove_queue_without_cleanup(queue)
-      ResqueSolo::Queue.cleanup(queue)
+    def remove_queue_with_unique_at_enqueue_cleanup(queue)
+      remove_queue_without_unique_at_enqueue_cleanup(queue)
+      Resque::UniqueAtEnqueue::Queue.cleanup(queue)
     end
 
-    alias_method :remove_queue_without_cleanup, :remove_queue
-    alias_method :remove_queue, :remove_queue_with_cleanup
+    alias_method :remove_queue_without_unique_at_enqueue_cleanup, :remove_queue
+    alias_method :remove_queue, :remove_queue_with_unique_at_enqueue_cleanup
   end
 end

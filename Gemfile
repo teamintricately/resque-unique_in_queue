@@ -1,10 +1,18 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 group :test do
   unless ENV["TRAVIS"]
-    gem "pry-byebug", platform: :mri_22
+    gem 'byebug', '~> 10', platform: :mri, require: false
+    gem 'pry', '~> 0', platform: :mri, require: false
+    gem 'pry-byebug', '~> 3', platform: :mri, require: false
   end
-  gem "simplecov", require: false
+  gem 'rubocop', '~> 0.60.0'
+  gem 'simplecov', '~> 0', require: false
 end
 
+# Specify your gem's dependencies in resque-unique_at_enqueue.gemspec
 gemspec

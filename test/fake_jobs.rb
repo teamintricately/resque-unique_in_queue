@@ -2,16 +2,16 @@ class FakeJob
   @queue = :normal
 end
 
-class FakeUniqueJob
-  include Resque::Plugins::UniqueJob
+class FakeUniqueAtEnqueue
+  include Resque::Plugins::UniqueAtEnqueue
   @queue = :unique
 
   def self.perform(_)
   end
 end
 
-class FailingUniqueJob
-  include Resque::Plugins::UniqueJob
+class FailingUniqueAtEnqueue
+  include Resque::Plugins::UniqueAtEnqueue
   @queue = :unique
 
   def self.perform(_)
@@ -19,8 +19,8 @@ class FailingUniqueJob
   end
 end
 
-class UniqueJobWithTtl
-  include Resque::Plugins::UniqueJob
+class UniqueAtEnqueueWithTtl
+  include Resque::Plugins::UniqueAtEnqueue
   @queue = :unique_with_ttl
   @ttl = 300
 
@@ -28,8 +28,8 @@ class UniqueJobWithTtl
   end
 end
 
-class UniqueJobWithLock
-  include Resque::Plugins::UniqueJob
+class UniqueAtEnqueueWithLock
+  include Resque::Plugins::UniqueAtEnqueue
   @queue = :unique_with_lock
   @lock_after_execution_period = 150
 

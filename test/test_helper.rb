@@ -4,7 +4,7 @@ if ENV["SIMPLE_COV"]
 end
 
 require "minitest/autorun"
-require "resque_solo"
+require "resque-unique_at_enqueue"
 require "fake_jobs"
 require "fakeredis"
 begin
