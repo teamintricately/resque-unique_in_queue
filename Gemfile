@@ -14,5 +14,5 @@ group :test do
   gem 'simplecov', '~> 0', require: false
 end
 
-# Specify your gem's dependencies in resque-unique_at_enqueue.gemspec
+# Specify your gem's dependencies in resque-unique_in_queue.gemspec
 gemspec

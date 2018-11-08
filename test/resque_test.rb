@@ -2,11 +2,11 @@ require 'test_helper'
 
 class ResqueTest < MiniTest::Spec
   before do
-    Resque.redis.redis.flushdb
+    Resque.redis.flushdb
   end
 
   it 'is a valid plugin' do
-    Resque::Plugin.lint(Resque::Plugins::UniqueAtEnqueue)
+    Resque::Plugin.lint(Resque::Plugins::UniqueInQueue)
   end
 
   it 'enqueues normal jobs' do
@@ -33,12 +33,12 @@ class ResqueTest < MiniTest::Spec
 
     describe 'unique job' do
       it 'should return true if job was enqueued' do
-        assert Resque.enqueue_to(:normal, FakeUniqueAtEnqueue)
+        assert Resque.enqueue_to(:normal, FakeUniqueInQueue)
       end
 
       it 'should return nil if job already existed' do
-        Resque.enqueue_to(:normal, FakeUniqueAtEnqueue)
-        assert_nil Resque.enqueue_to(:normal, FakeUniqueAtEnqueue)
+        Resque.enqueue_to(:normal, FakeUniqueInQueue)
+        assert_nil Resque.enqueue_to(:normal, FakeUniqueInQueue)
       end
     end
   end

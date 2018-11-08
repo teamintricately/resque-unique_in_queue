@@ -1,5 +1,5 @@
 module Resque
-  module UniqueAtEnqueue
+  module UniqueInQueue
     module Queue
       def queued?(queue, item)
         return false unless is_unique?(item)
@@ -29,11 +29,11 @@ module Resque
       end
 
       def unique_key(queue, item)
-        const_for(item).unique_at_queue_time_redis_key(queue, item)
+        const_for(item).unique_in_queue_redis_key(queue, item)
       end
 
       def is_unique?(item)
-        const_for(item).included_modules.include?(::Resque::Plugins::UniqueAtEnqueue)
+        const_for(item).included_modules.include?(::Resque::Plugins::UniqueInQueue)
       rescue NameError
         false
       end
@@ -59,12 +59,12 @@ module Resque
           next unless json['class'] == klass
           next if args.any? && json['args'] != args
 
-          Resque::UniqueAtEnqueue::Queue.mark_unqueued(queue, json)
+          Resque::UniqueInQueue::Queue.mark_unqueued(queue, json)
         end
       end
 
       def cleanup(queue)
-        keys = redis.keys("unique_at_enqueue:queue:#{queue}:job:*")
+        keys = redis.keys("#{Resque::UniqueInQueue.uniq_config&.unique_in_queue_key_base}:queue:#{queue}:job:*")
         redis.del(*keys) if keys.any?
       end
 

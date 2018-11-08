@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require File.expand_path('lib/resque/unique_at_enqueue/version', __dir__)
+require File.expand_path('lib/resque/unique_in_queue/version', __dir__)
 
 Gem::Specification.new do |spec|
-  spec.name          = 'resque-unique_at_enqueue'
-  spec.version       = Resque::UniqueAtEnqueue::VERSION
+  spec.name          = 'resque-unique_in_queue'
+  spec.version       = Resque::UniqueInQueue::VERSION
   spec.authors       = ['Peter H. Boling', 'Tee Parham']
   spec.email         = %w[peter.boling@gmail.com]
   spec.license       = 'MIT'
 
-  spec.summary       = 'A resque plugin that ensures job uniqueness at tome of enqueue.'
-  spec.summary       = 'A resque plugin that ensures job uniqueness at tome of enqueue.'
-  spec.homepage      = 'https://github.com/pboling/resque-unique_at_enqueue'
-  spec.required_ruby_version = '>= 2.0.0'
+  spec.summary       = 'A resque plugin that ensures job uniqueness at enqueue time.'
+  spec.summary       = 'A resque plugin that ensures job uniqueness at enqueue time.'
+  spec.homepage      = 'https://github.com/pboling/resque-unique_in_queue'
+  spec.required_ruby_version = '>= 2.3.0'
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})

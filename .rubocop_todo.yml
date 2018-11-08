@@ -11,14 +11,14 @@
 # Include: **/*.gemspec
 Gemspec/DuplicatedAssignment:
   Exclude:
-    - 'resque-unique_at_enqueue.gemspec'
+    - 'resque-unique_in_queue.gemspec'
 
 # Offense count: 1
 # Configuration parameters: Include.
 # Include: **/*.gemspec
 Gemspec/RequiredRubyVersion:
   Exclude:
-    - 'resque-unique_at_enqueue.gemspec'
+    - 'resque-unique_in_queue.gemspec'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -26,7 +26,7 @@ Gemspec/RequiredRubyVersion:
 # SupportedStylesAlignWith: start_of_line, def
 Layout/DefEndAlignment:
   Exclude:
-    - 'lib/resque/unique_at_enqueue/queue.rb'
+    - 'lib/resque/unique_in_queue/queue.rb'
 
 # Offense count: 1
 Lint/HandleExceptions:
@@ -43,7 +43,7 @@ Metrics/MethodLength:
 # AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
 Naming/FileName:
   Exclude:
-    - 'lib/resque-unique_at_enqueue.rb'
+    - 'lib/resque-unique_in_queue.rb'
 
 # Offense count: 1
 # Configuration parameters: NamePrefix, NamePrefixBlacklist, NameWhitelist, MethodDefinitionMacros.
@@ -54,7 +54,7 @@ Naming/FileName:
 Naming/PredicateName:
   Exclude:
     - 'spec/**/*'
-    - 'lib/resque/unique_at_enqueue/queue.rb'
+    - 'lib/resque/unique_in_queue/queue.rb'
 
 # Offense count: 4
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
@@ -68,12 +68,12 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'test/**/*'
-    - 'lib/resque-unique_at_enqueue.rb'
-    - 'lib/resque/plugins/unique_at_enqueue.rb'
-    - 'lib/resque/unique_at_enqueue/configuration.rb'
-    - 'lib/resque/unique_at_enqueue/queue.rb'
-    - 'lib/resque/unique_at_enqueue/resque_ext/job.rb'
-    - 'lib/resque/unique_at_enqueue/resque_ext/resque.rb'
+    - 'lib/resque-unique_in_queue.rb'
+    - 'lib/resque/plugins/unique_in_queue.rb'
+    - 'lib/resque/unique_in_queue/configuration.rb'
+    - 'lib/resque/unique_in_queue/queue.rb'
+    - 'lib/resque/unique_in_queue/resque_ext/job.rb'
+    - 'lib/resque/unique_in_queue/resque_ext/resque.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -82,7 +82,7 @@ Style/Documentation:
 Style/NumericPredicate:
   Exclude:
     - 'spec/**/*'
-    - 'lib/resque/unique_at_enqueue/queue.rb'
+    - 'lib/resque/unique_in_queue/queue.rb'
 
 # Offense count: 26
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

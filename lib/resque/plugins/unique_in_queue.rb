@@ -5,21 +5,21 @@ module Resque
     #
     #   class EnqueueAlone
     #     @queue = :enqueue_alone
-    #     include Resque::Plugins::UniqueAtEnqueue
+    #     include Resque::Plugins::UniqueInQueue
     #
     #     def self.perform(arg1, arg2)
     #       alone_stuff
     #     end
     #   end
     #
-    module UniqueAtEnqueue
+    module UniqueInQueue
       def self.included(base)
         base.extend ClassMethods
       end
 
       module ClassMethods
-        def unique_at_queue_time_redis_key(queue, item)
-          "unique_at_enqueue:queue:#{queue}:job:#{Resque::UniqueAtEnqueue::Queue.const_for(item).redis_key(item)}"
+        def unique_in_queue_redis_key(queue, item)
+          "#{unique_in_queue_key_base}:queue:#{queue}:job:#{Resque::UniqueInQueue::Queue.const_for(item).redis_key(item)}"
         end
 
         # Payload is what Resque stored for this job along with the job's class name:
@@ -44,7 +44,7 @@ module Resque
         #   @ttl = 40
         # end
         def ttl
-          @ttl ||= -1
+          @ttl ||= Resque::UniqueInQueue.uniq_config&.ttl
         end
 
         # The default ttl of a persisting key is 0, i.e. immediately deleted.
@@ -57,7 +57,14 @@ module Resque
         #   @lock_after_execution_period = 40
         # end
         def lock_after_execution_period
-          @lock_after_execution_period ||= 0
+          @lock_after_execution_period ||= Resque::UniqueInQueue.uniq_config&.lock_after_execution_period
+        end
+
+        # Can't be overridden per each class because it wouldn't make sense.
+        # It wouldn't be able to determine or enforce uniqueness across queues,
+        #   and general cleanup of stray keys would be nearly impossible.
+        def unique_in_queue_key_base
+          Resque::UniqueInQueue.uniq_config&.unique_in_queue_key_base
         end
       end
     end
