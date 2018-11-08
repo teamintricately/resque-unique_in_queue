@@ -23,8 +23,6 @@ require 'resque/unique_in_queue/configuration'
 #   Resque, Resque::Job, or Resque::Queue.
 module Resque
   module UniqueInQueue
-    env_debug = ENV['RESQUE_DEBUG']
-    IN_QUEUE_DEBUG = env_debug == 'true' || (env_debug.is_a?(String) && env_debug.match?(/enqueue/)) || env_debug
     PLUGIN_TAG = (ColorizedString['[R-UIQ] '].blue).freeze
 
     def in_queue_unique_log(message, config_proxy = nil)
@@ -34,7 +32,7 @@ module Resque
 
     def in_queue_unique_debug(message, config_proxy = nil)
       config_proxy ||= uniqueness_configuration
-      config_proxy.unique_logger&.send(config_proxy.unique_log_level, "#{PLUGIN_TAG}#{message}") if IN_QUEUE_DEBUG
+      config_proxy.unique_logger&.debug("#{PLUGIN_TAG}#{message}") if config_proxy.debug_mode
     end
 
     # There are times when the class will need access to the configuration object,

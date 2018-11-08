@@ -10,7 +10,8 @@ module Resque
                     :log_level,
                     :unique_in_queue_key_base,
                     :lock_after_execution_period,
-                    :ttl
+                    :ttl,
+                    :debug_mode
       def initialize(**options)
         @logger = options.key?(:logger) ? options[:logger] : Logger.new(STDOUT)
         @log_level = options.key?(:log_level) ? options[:log_level] : :debug
@@ -21,6 +22,8 @@ module Resque
         # Can be set per each job:
         @lock_after_execution_period = options.key?(:lock_after_execution_period) ? options[:lock_after_execution_period] : DEFAULT_LOCK_AFTER_EXECUTION_PERIOD
         @ttl = options.key?(:ttl) ? options[:ttl] : DEFAULT_TTL
+        env_debug = ENV['RESQUE_DEBUG']
+        @debug_mode = options.key?(:debug_mode) ? options[:debug_mode] : env_debug == 'true' || (env_debug.is_a?(String) && env_debug.match?(/in_queue/))
       end
 
       def unique_logger
