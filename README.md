@@ -17,7 +17,7 @@
 
 Resque::UniqueInQueue is a resque plugin to add unique jobs to resque.
 
-It is a re-write of [resque-loner](https://github.com/jayniz/resque-loner).
+It is a re-write of [resque_solo](https://github.com/neighborland/resque_solo), which is a fork of [resque-loner](https://github.com/jayniz/resque-loner).
 
 It requires resque 1.25 and works with ruby 2.0 and later.
 
@@ -35,7 +35,7 @@ gem 'resque-unique_in_queue'
 
 ```ruby
 class UpdateCat
-  include Resque::Plugins::UniqueJob
+  include Resque::Plugins::UniqueInQueue
   @queue = :cats
 
   def self.perform(cat_id)
@@ -76,7 +76,7 @@ job more than once per minute, set `lock_after_execution_period = 60`.
 
 ```ruby
 class UpdateCat
-  include Resque::Plugins::UniqueJob
+  include Resque::Plugins::UniqueInQueue
   @queue = :cats
   @lock_after_execution_period = 20
 

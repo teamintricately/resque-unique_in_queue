@@ -40,7 +40,7 @@ module Resque
         # For example:
         #
         # class FooJob
-        #   include Resque::Plugins::UniqueJob
+        #   include Resque::Plugins::UniqueInQueue
         #   @ttl = 40
         # end
         def ttl
@@ -53,7 +53,7 @@ module Resque
         # For example:
         #
         # class FooJob
-        #   include Resque::Plugins::UniqueJob
+        #   include Resque::Plugins::UniqueInQueue
         #   @lock_after_execution_period = 40
         # end
         def lock_after_execution_period
