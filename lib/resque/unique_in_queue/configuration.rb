@@ -8,16 +8,20 @@ module Resque
 
       attr_accessor :logger,
                     :log_level,
-                    :unique_in_queue_key_base,
                     :lock_after_execution_period,
                     :ttl,
                     :debug_mode
+
+      class << self
+        attr_accessor :unique_in_queue_key_base
+      end
+      # Normally isn't set per job, so it can match across all queued jobs.
+      @unique_in_queue_key_base = DEFAULT_IN_QUEUE_KEY_BASE
+
       def initialize(**options)
         @logger = options.key?(:logger) ? options[:logger] : Logger.new(STDOUT)
         @log_level = options.key?(:log_level) ? options[:log_level] : :debug
-
-        # Can't be set per job:
-        @unique_in_queue_key_base = options.key?(:unique_in_queue_key_base) ? options[:unique_in_queue_key_base] : DEFAULT_IN_QUEUE_KEY_BASE
+        @unique_in_queue_key_base = options.key?(:unique_in_queue_key_base) ? options[:unique_in_queue_key_base] : nil
 
         # Can be set per each job:
         @lock_after_execution_period = options.key?(:lock_after_execution_period) ? options[:lock_after_execution_period] : DEFAULT_LOCK_AFTER_EXECUTION_PERIOD
@@ -36,6 +40,10 @@ module Resque
 
       def log(msg)
         Resque::UniqueInQueue.in_queue_unique_log(msg, self)
+      end
+
+      def unique_in_queue_key_base
+        @unique_in_queue_key_base || self.class.unique_in_queue_key_base
       end
 
       def to_hash
