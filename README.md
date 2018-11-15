@@ -33,6 +33,26 @@ gem 'resque-unique_in_queue'
 
 ## Usage
 
+`resque-unique_in_queue` utilizes 3 class instance variables that can be set
+in your Jobs, in addition to the standard `@queue`.  Here they are, with their
+default values:
+
+```ruby
+@lock_after_execution_period = 0
+@ttl = -1
+@unique_in_queue_key_base = 'r-uiq'.freeze
+```
+
+The last one, in normal circumstances, shouldn't be set as different per class,
+or uniqueness cleanup becomes more difficult.
+
+It should be set only once, globally:
+
+```ruby
+Resque::UniqueInQueue.configuration.unique_in_queue_key_base = 'my-custom'
+```
+
+
 ```ruby
 class UpdateCat
   include Resque::Plugins::UniqueInQueue

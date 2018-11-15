@@ -35,18 +35,6 @@ module Resque
           Digest::MD5.hexdigest Resque.encode(class: job, args: args)
         end
 
-        # The default ttl of a locking key is -1 (forever).
-        # To expire the lock after a certain amount of time, set a ttl (in seconds).
-        # For example:
-        #
-        # class FooJob
-        #   include Resque::Plugins::UniqueInQueue
-        #   @ttl = 40
-        # end
-        def ttl
-          @ttl ||= Resque::UniqueInQueue.uniq_config&.ttl
-        end
-
         # The default ttl of a persisting key is 0, i.e. immediately deleted.
         # Set lock_after_execution_period to block the execution
         # of the job for a certain amount of time (in seconds).
@@ -57,14 +45,30 @@ module Resque
         #   @lock_after_execution_period = 40
         # end
         def lock_after_execution_period
-          @lock_after_execution_period ||= Resque::UniqueInQueue.uniq_config&.lock_after_execution_period
+          instance_variable_get(:@lock_after_execution_period) ||
+              instance_variable_set(:lock_after_execution_period, Resque::UniqueInQueue.configuration&.lock_after_execution_period)
         end
 
-        # Can't be overridden per each class because it wouldn't make sense.
+        # The default ttl of a locking key is -1 (forever).
+        # To expire the lock after a certain amount of time, set a ttl (in seconds).
+        # For example:
+        #
+        # class FooJob
+        #   include Resque::Plugins::UniqueInQueue
+        #   @ttl = 40
+        # end
+        def ttl
+          instance_variable_get(:@ttl) ||
+              instance_variable_set(:ttl, Resque::UniqueInQueue.configuration&.ttl)
+        end
+
+        # Should not generally be overridden per each class because it wouldn't
+        #   make sense.
         # It wouldn't be able to determine or enforce uniqueness across queues,
         #   and general cleanup of stray keys would be nearly impossible.
         def unique_in_queue_key_base
-          Resque::UniqueInQueue.uniq_config&.unique_in_queue_key_base
+          instance_variable_get(:@unique_in_queue_key_base) ||
+              instance_variable_set(:@unique_in_queue_key_base, Resque::UniqueInQueue.configuration&.unique_in_queue_key_base)
         end
       end
     end
