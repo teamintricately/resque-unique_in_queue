@@ -45,12 +45,11 @@ class JobTest < MiniTest::Spec
     assert_equal 1, Resque.size(:unique)
   end
 
-  focus
   it 'mark jobs as unqueued when Resque processes them' do
     Resque.enqueue FakeUniqueInQueue, 'foo'
     assert Resque.enqueued?(FakeUniqueInQueue, 'foo')
     Resque.reserve(:unique)
-    assert !Resque.enqueued?(FakeUniqueInQueue, 'foo')
+    refute Resque.enqueued?(FakeUniqueInQueue, 'foo')
   end
 
   it 'mark jobs as unqueued when they raise an exception' do
