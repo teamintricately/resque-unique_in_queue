@@ -81,6 +81,9 @@ class JobTest < MiniTest::Spec
     Resque.enqueue FakeUniqueInQueue, 'foo'
     Resque.enqueue FailingUniqueInQueue, 'foo'
     Resque.remove_queue(:unique)
+    refute Resque.enqueued?(FakeUniqueInQueue, 'foo')
+    refute Resque.enqueued?(FailingUniqueInQueue, 'foo')
+
     Resque.enqueue(FakeUniqueInQueue, 'foo')
     assert_equal 1, Resque.size(:unique)
   end
