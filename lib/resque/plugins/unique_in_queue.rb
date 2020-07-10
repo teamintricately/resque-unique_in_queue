@@ -19,7 +19,11 @@ module Resque
 
       module ClassMethods
         def unique_in_queue_redis_key(queue, item)
-          "#{unique_in_queue_key_base}:queue:#{queue}:job:#{Resque::UniqueInQueue::Queue.const_for(item).redis_key(item)}"
+          "#{unique_in_queue_key_base}:queue:#{queue}:job"
+        end
+
+        def unique_in_queue_redis_value(queue, item)
+          Resque::UniqueInQueue::Queue.const_for(item).redis_key(item)
         end
 
         # Payload is what Resque stored for this job along with the job's class name:

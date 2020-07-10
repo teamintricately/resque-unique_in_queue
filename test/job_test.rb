@@ -45,6 +45,14 @@ class JobTest < MiniTest::Spec
     assert_equal 1, Resque.size(:unique)
   end
 
+  focus
+  it 'mark jobs as unqueued when Resque processes them' do
+    Resque.enqueue FakeUniqueInQueue, 'foo'
+    assert Resque.enqueued?(FakeUniqueInQueue, 'foo')
+    Resque.reserve(:unique)
+    assert !Resque.enqueued?(FakeUniqueInQueue, 'foo')
+  end
+
   it 'mark jobs as unqueued when they raise an exception' do
     2.times { Resque.enqueue(FailingUniqueInQueue, 'foo') }
     assert_equal 1, Resque.size(:unique)
@@ -81,7 +89,7 @@ class JobTest < MiniTest::Spec
   it 'honor ttl in the redis key' do
     Resque.enqueue UniqueInQueueWithTtl
     assert Resque.enqueued?(UniqueInQueueWithTtl)
-    keys = Resque.redis.keys 'r-uiq:queue:unique_with_ttl:job:*'
+    keys = Resque.redis.keys 'r-uiq:queue:unique_with_ttl:job'
     assert_equal 1, keys.length
     assert_in_delta UniqueInQueueWithTtl.ttl, Resque.redis.ttl(keys.first), 2
   end
@@ -99,7 +107,7 @@ class JobTest < MiniTest::Spec
   it 'honor lock_after_execution_period in the redis key' do
     Resque.enqueue UniqueInQueueWithLock
     Resque.reserve(:unique_with_lock)
-    keys = Resque.redis.keys 'r-uiq:queue:unique_with_lock:job:*'
+    keys = Resque.redis.keys 'r-uiq:queue:unique_with_lock:job'
     assert_equal 1, keys.length
     assert_in_delta UniqueInQueueWithLock.lock_after_execution_period,
                     Resque.redis.ttl(keys.first), 2

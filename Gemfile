@@ -6,9 +6,9 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 group :test do
   unless ENV['TRAVIS']
-    gem 'byebug', '~> 10', platform: :mri, require: false
-    gem 'pry', '~> 0', platform: :mri, require: false
-    gem 'pry-byebug', '~> 3', platform: :mri, require: false
+    gem 'byebug', '~> 11.3'
+    gem 'pry', '~> 0.13.2'
+    gem 'minitest-focus', '~> 1.2.1'
   end
   gem 'rubocop', '~> 0.60.0'
   gem 'simplecov', '~> 0', require: false
