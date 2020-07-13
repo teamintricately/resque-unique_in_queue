@@ -87,31 +87,4 @@ class JobTest < MiniTest::Spec
     Resque.enqueue(FakeUniqueInQueue, 'foo')
     assert_equal 1, Resque.size(:unique)
   end
-
-  it 'honor ttl in the redis key' do
-    Resque.enqueue UniqueInQueueWithTtl
-    assert Resque.enqueued?(UniqueInQueueWithTtl)
-    keys = Resque.redis.keys 'r-uiq:queue:unique_with_ttl:job'
-    assert_equal 1, keys.length
-    assert_in_delta UniqueInQueueWithTtl.ttl, Resque.redis.ttl(keys.first), 2
-  end
-
-  it 'prevents duplicates within lock_after_execution_period' do
-    Resque.enqueue UniqueInQueueWithLock, 'foo'
-    Resque.enqueue UniqueInQueueWithLock, 'foo'
-    assert_equal 1, Resque.size(:unique_with_lock)
-    Resque.reserve(:unique_with_lock)
-    assert_equal 0, Resque.size(:unique_with_lock)
-    Resque.enqueue UniqueInQueueWithLock, 'foo'
-    assert_equal 0, Resque.size(:unique_with_lock)
-  end
-
-  it 'honor lock_after_execution_period in the redis key' do
-    Resque.enqueue UniqueInQueueWithLock
-    Resque.reserve(:unique_with_lock)
-    keys = Resque.redis.keys 'r-uiq:queue:unique_with_lock:job'
-    assert_equal 1, keys.length
-    assert_in_delta UniqueInQueueWithLock.lock_after_execution_period,
-                    Resque.redis.ttl(keys.first), 2
-  end
 end

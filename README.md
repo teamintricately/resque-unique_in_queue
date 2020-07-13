@@ -33,13 +33,11 @@ gem 'resque-unique_in_queue'
 
 ## Usage
 
-`resque-unique_in_queue` utilizes 3 class instance variables that can be set
-in your Jobs, in addition to the standard `@queue`.  Here they are, with their
+`resque-unique_in_queue` utilizes one class instance variables that can be set
+in your Jobs, in addition to the standard `@queue`.  Here it is, with its
 default values:
 
 ```ruby
-@lock_after_execution_period = 0
-@ttl = -1
 @unique_in_queue_key_base = 'r-uiq'.freeze
 ```
 
@@ -81,33 +79,8 @@ Resque.enqueued_in? :dogs, UpdateCat, 1
 => false
 ```
 
-### Options
-
-#### `lock_after_execution_period`
-
-By default, lock_after_execution_period is 0 and `enqueued?` becomes false as soon as the job
-is being worked on.
-
-The `lock_after_execution_period` setting can be used to delay when the unique job key is deleted
-(i.e. when `enqueued?` becomes `false`). For example, if you have a long-running unique job that
-takes around 10 seconds, and you don't want to requeue another job until you are sure it is done,
-you could set `lock_after_execution_period = 20`. Or if you never want to run a long running
-job more than once per minute, set `lock_after_execution_period = 60`.
-
-```ruby
-class UpdateCat
-  include Resque::Plugins::UniqueInQueue
-  @queue = :cats
-  @lock_after_execution_period = 20
-
-  def self.perform(cat_id)
-    # do something
-  end
-end
-```
-
 #### Oops, I have stale Queue Time uniqueness keys...
- 
+
 Preventing jobs with matching signatures from being queued, and they never get
 dequeued because there is no actual corresponding job to dequeue.
 
@@ -166,7 +139,7 @@ spec.add_dependency 'resque-unique_in_queue', '~> 1.0'
 * Copyright (c) 2012 Jonathan R. Wallace
 * Copyright (c) 2017 - 2018 [Peter H. Boling][peterboling] of [Rails Bling][railsbling]
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 [license]: LICENSE
 [semver]: http://semver.org/

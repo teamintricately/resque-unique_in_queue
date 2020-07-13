@@ -17,9 +17,6 @@ module Resque
         value = unique_value(queue, item)
 
         redis.sadd(key, value)
-
-        ttl = item_ttl(item)
-        redis.expire(key, ttl) if ttl >= 0
       end
 
       def mark_unqueued(queue, job)
@@ -29,12 +26,7 @@ module Resque
         key   = unique_key(queue, item)
         value = unique_value(queue, item)
 
-        ttl = lock_after_execution_period(item)
-        if ttl == 0
-          redis.srem(key, value)
-        else
-          redis.expire(key, ttl)
-        end
+        redis.srem(key, value)
       end
 
       def unique_key(queue, item)
@@ -49,18 +41,6 @@ module Resque
         const_for(item).included_modules.include?(::Resque::Plugins::UniqueInQueue)
       rescue NameError
         false
-      end
-
-      def item_ttl(item)
-        const_for(item).ttl
-      rescue NameError
-        -1
-      end
-
-      def lock_after_execution_period(item)
-        const_for(item).lock_after_execution_period
-      rescue NameError
-        0
       end
 
       def destroy(queue, klass, *args)
@@ -96,9 +76,8 @@ module Resque
         Resque.constantize(item_class(item))
         end
 
-      module_function :queued?, :mark_queued, :mark_unqueued, :unique_key, :unique_value
-      module_function :is_unique?, :item_ttl, :lock_after_execution_period
-      module_function :destroy, :cleanup, :redis, :item_class, :const_for
+      module_function :queued?, :mark_queued, :mark_unqueued, :unique_key, :unique_value,
+                      :is_unique?, :destroy, :cleanup, :redis, :item_class, :const_for
     end
   end
 end
