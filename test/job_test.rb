@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class JobTest < MiniTest::Spec
@@ -8,6 +10,7 @@ class JobTest < MiniTest::Spec
   it 'enqueue identical jobs once' do
     Resque.enqueue FakeUniqueInQueue, 'x'
     Resque.enqueue FakeUniqueInQueue, 'x'
+    byebug
     assert_equal 1, Resque.size(:unique)
   end
 

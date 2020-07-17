@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Resque
   module Plugins
     # If you want your job to support uniqueness at enqueue-time, simply include
