@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if ENV['SIMPLE_COV']
   require 'simplecov'
   SimpleCov.start
@@ -9,7 +11,7 @@ require 'fake_jobs'
 require 'fakeredis/minitest'
 
 begin
-  require 'pry-byebug'
+  require 'byebug'
 rescue LoadError
-  # ignore
 end
+
